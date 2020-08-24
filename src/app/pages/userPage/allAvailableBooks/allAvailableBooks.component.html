@@ -1,0 +1,57 @@
+<div class="row">
+  <div class="col-md-6 p-t-1"  *ngIf="!activeBookForm && !activeBookUpdateForm">
+    <div class="collapse navbar-collapse justify-content-end" id="collapseExample" [ngbCollapse]="isCollapsed">
+      <form>
+        <div class="input-group no-border">
+          <input type="text" (keyup)="filterBook($event)" name="search" [(ngModel)]="wordToSearch"
+           class="form-control" placeholder="Search a book by title">
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <i class="nc-icon nc-zoom-split"></i>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="row">
+  <div class="col-md-4" *ngFor="let book of availableBooks; let i = index">
+    <div class="card card-book">
+      <div class="image">
+        <img src="assets/img/damir-bosnjak.jpg" alt="...">
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-lg-10 col-md-10 col-10 ml-auto">
+            <h5 class="title" (click)="openSingleBookPage(i)" >{{ book.title }}</h5>
+          </div>
+          <div class="col-lg-2 col-md-2 col-2 ml-auto">
+            <i class="nc-icon nc-favourite-28"></i>
+            <br>
+            <small>14</small>
+          </div>
+        </div>
+        
+        <p class="description">  {{ book.resume }} </p>
+        <p class="description"> <b> Author: </b>  <span class="description">  {{ book.author }}  </span></p>
+        <p class="description"> <b> Pages: </b>  <span class="description">  {{ book.pages }}  </span></p>
+        
+      </div>
+      <div class="card-footer">
+        <hr>
+        <div class="row">
+          <div class="col-lg-6 col-md-6 col-6 text-center">
+           Read more ...
+          </div>
+          <div class="col-lg-6 col-md-6 col-6 text-center">
+            <button (click)="statusUpdate(i, 'REQUESTED')" class="btn btn-primary btn-round">Borrow it</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,60 @@
+<div class="loginWrapper">
+  <div class="">
+    <div class="loginFormWrapper">
+  
+      <div class="logo">
+        <div  class="logoLibrary text-center">
+            <img src="assets/img/projectImg/logoLibrary.png" width="100" height="auto">
+        </div>
+    
+        <div class="simple-text logo-normal text-center font-weight-bold">
+          GIDI BookLibrary
+        </div>
+      </div>
+  
+      <div class="p-2">
+        
+        <form  #signInForm="ngForm" (ngSubmit)="onSubmit()">
+
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label><b>Email</b></label>
+                <input type="text" class="form-control" placeholder="email"
+                 [(ngModel)]="userCredentials.email" name="email"  ngModel required >
+              </div>
+            </div>
+          </div>
+          
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label><b>Password  </b></label>
+                <input type="password" class="form-control" placeholder="password"
+                [(ngModel)]="userCredentials.password" name="password"  ngModel required
+                 >
+              </div>
+            </div>
+          </div>
+          
+          <div class="row">
+            <div class="update ml-auto mr-auto">
+              <button [disabled]="!signInForm.form.valid" type="submit" class="btn btn-primary btn-round">Sign In</button>
+            </div>
+          </div>
+        </form>
+        <p class="text-danger">
+          {{ errorMessage }}
+        </p>
+        <hr>
+        <p class="text-center">
+          <b>
+            Not member ? <a class="text-danger" (click)="onSignup()"> Sign up </a>now and enjoy !
+          </b>
+        </p>
+      </div>
+  
+    </div>
+  </div>
+</div>
+

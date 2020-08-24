@@ -1,0 +1,51 @@
+
+<div class="sidebar-wrapper">
+  <div class="logo">
+    <div  class="logoLibrary text-center">
+        <img src="assets/img/projectImg/logoLibrary.png" width="100" height="auto">
+    </div>
+
+    <div class="simple-text logo-normal text-center font-weight-bold">
+      GIDI BookLibrary
+    </div>
+  </div>
+  <h6 class="title ml-4 mt-3"> User Menu </h6>
+  <div class="userMenuItem">
+    <ul class="nav">
+        <li *ngFor="let user_menuItem of user_menuItems" routerLinkActive="active" class="{{user_menuItem.class}}">
+            <a [routerLink]="[user_menuItem.path]">
+                <i class="nc-icon {{user_menuItem.icon}}"></i>
+                <p>{{user_menuItem.title}}</p>
+            </a>
+        </li>
+    </ul>
+  </div>
+
+  <hr class="solidDivider">
+  <h6 class="title ml-4"> Librarian </h6>
+
+  <div class="userMenuItem">
+    <ul class="nav">
+        <li *ngFor="let librarian_menuItem of librarian_menuItems" routerLinkActive="active" class="{{librarian_menuItems.class}}">
+            <a [routerLink]="[librarian_menuItem.path]">
+                <i class="nc-icon {{librarian_menuItem.icon}}"></i>
+                <p>{{librarian_menuItem.title}}</p>
+            </a>
+        </li>
+    </ul>
+  </div>
+
+  <hr class="solidDivider">
+
+  <div class="userMenuItem">
+    <ul class="nav">
+        <li >
+            <a (click)="onSignOut()">
+                <i class="nc-icon nc-button-power"></i>
+                <p>Logout</p>
+            </a>
+        </li>
+    </ul>
+  </div>
+
+</div>

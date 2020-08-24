@@ -1,0 +1,72 @@
+<div class="loginWrapper">
+  <div class="">
+    <div class="loginFormWrapper">
+  
+      <div class="logo">
+        <div  class="logoLibrary text-center">
+            <img src="assets/img/projectImg/logoLibrary.png" width="100" height="auto">
+        </div>
+    
+        <div class="simple-text logo-normal text-center font-weight-bold">
+          GIDI BookLibrary
+        </div>
+      </div>
+  
+      <div class="p-2">
+
+        <form  #signUpForm="ngForm" (ngSubmit)="onSubmit()">
+
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label><b>Email</b></label>
+                <input type="text" class="form-control" placeholder="email"
+                 [(ngModel)]="userCredentials.email" name="email"  ngModel required >
+              </div>
+            </div>
+          </div>
+          
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label><b>Password (min: 7 characters) </b></label>
+                <input type="password" class="form-control" placeholder="password"
+                [(ngModel)]="userCredentials.password" name="password"  ngModel required
+                minlength="7" >
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label><b>Confirm password</b></label>
+                <input type="password" class="form-control" placeholder="Confirm the password"
+                [(ngModel)]="userCredentials.confirmPassword" name="confirmPassword"  ngModel required
+                minlength="7"  >
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="update ml-auto mr-auto">
+              <button [disabled]="!signUpForm.form.valid || (userCredentials.confirmPassword != userCredentials.password )  " type="submit" class="btn btn-primary btn-round">Create an account</button>
+            </div>
+          </div>
+        </form>
+        <p class="text-danger">
+          {{ errorMessage }}
+        </p>
+        <hr>
+        <p class="text-center">
+          <b>
+            Already member ? <a class="text-danger" (click)="onSignin()"> Sign in </a> and enjoy !
+          </b>
+        </p>
+      </div>
+  
+    </div>
+  </div>
+</div>
+
+<div class="">
+</div>

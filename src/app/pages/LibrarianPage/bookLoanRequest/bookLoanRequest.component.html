@@ -1,0 +1,57 @@
+<div class="row">
+  <div class="col-md-12" >
+    <div class="card">
+      <div class="card-header">
+        <h4 class="card-title">List of book requested by readers</h4>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table">
+            <thead class=" text-primary">
+              <th>
+                Book Requested
+              </th>
+              <th>
+                Requested by
+              </th>
+              <th >
+                Decision
+              </th>
+            </thead>
+            <tbody>
+              <tr *ngFor="let book of requestedBooks; let i = index">
+                <td>
+                  <div class="bookRequestedWrapper">
+                    <div class="row">
+                      <div class="col-lg-4 col-md-4 col-4">
+                        <div class="card-left-image-wrapper">
+                          <img class="card-left-image" src="assets/img/damir-bosnjak.jpg" alt="...">
+                        </div>
+                      </div>
+                      <div class="col-lg-8 col-md-8 col-8">
+                        <h5 class="title">{{book.title}}</h5>
+                        <p class="description"> <b> Author: </b>  <span class="description">{{book.author}}</span></p>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <div class="resquesterWrapper">
+                      Solomon OCOCHA
+                  </div>
+                </td>
+                <td>
+                  <div class="decicisionButtonWrapper">
+                        <button (click)="statusUpdate(i, 'NONE')" class="btn btn-danger btn-round"> <i class="nc-icon nc-simple-remove"></i> deny</button>
+                    
+                        <button (click)="statusUpdate(i, 'BORROWED')"  class="btn btn-success btn-round ml-1"> <i class="nc-icon nc-settings"></i> Lend </button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

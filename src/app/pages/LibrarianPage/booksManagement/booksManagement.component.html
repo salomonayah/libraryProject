@@ -1,0 +1,311 @@
+<div class="row">
+  <div class="col-md-6 p-t-1"  *ngIf="!activeBookForm && !activeBookUpdateForm">
+    <div class="collapse navbar-collapse justify-content-end" id="collapseExample" [ngbCollapse]="isCollapsed">
+      <form>
+        <div class="input-group no-border">
+          <input type="text" (keyup)="filterBook($event)" name="search" [(ngModel)]="wordToSearch"
+           class="form-control" placeholder="Search a book by title">
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <i class="nc-icon nc-zoom-split"></i>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="col-md-6"  *ngIf="!activeBookForm && !activeBookUpdateForm">
+    <div class="text-right"  >
+      <button class="btn btn-primary btn-round" (click)="openBookForm()"> 
+        <i class="nc-icon nc-simple-add"></i> Add a new book 
+      </button>
+    </div>
+  </div>
+
+  <div class="text-left"  *ngIf="activeBookForm || activeBookUpdateForm" >
+    <button class="btn btn-primary btn-round" (click)="openBookList()"> 
+      <i class="nc-icon nc-minimal-left"></i> Back to book list 
+    </button>
+  </div>
+</div>
+
+<div class="row" *ngIf="activeBookList" >
+  <div class="col-md-4" *ngFor="let book of books; let i = index" >
+    <div class="card card-book">
+      <div class="image">
+        <img src="assets/img/damir-bosnjak.jpg" alt="...">
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-lg-10 col-md-10 col-10 ml-auto">
+            <h5 class="title" (click)="openSingleBookPage(i)" >{{ book.title }}</h5>
+          </div>
+          <div class="col-lg-2 col-md-2 col-2 ml-auto">
+            <i class="nc-icon nc-favourite-28"></i>
+            <br>
+            <small>14</small>
+          </div>
+        </div>
+        
+        <p class="description">  {{ book.resume }} </p>
+        <p class="description"> <b> Author: </b>  <span class="description">  {{ book.author }}  </span></p>
+        <p class="description"> <b> Pages: </b>  <span class="description">  {{ book.pages }}  </span></p>
+        
+      </div>
+      <div class="card-footer">
+        <hr>
+        <div class="row">
+          <div class="col-lg-6 col-md-6 col-6 text-center">
+            <button class="btn btn-warning btn-round" (click)="onUpdateButtonClicked(i)">
+               <i class="nc-icon nc-settings"></i> Update
+            </button>
+          </div>
+          <div class="col-lg-6 col-md-6 col-6 text-center">
+            <button class="btn btn-danger btn-round" (click)="onDeleteBook(i)"> 
+              <i class="nc-icon nc-simple-remove"></i> Delete
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="card" *ngIf="activeBookForm" >
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-12">
+          <h5 class="title pl-2" > Add a new book</h5>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4">
+            <!-- image cropping -->
+            <div class="container m-t-25">
+
+              <div class="row" style="margin-top: 5%;">
+                  <div class="text-center col-md-12">
+                      <input type="file" style="display: none;" #selectProdImg (change)="fileChangeEvent($event)" />
+                  </div>
+              </div>
+
+              <div  class="importImg p-t-10" (click)="selectProdImg.click()" *ngIf="imgToCropSelected == false">
+                  <p class="text-center p-10"><i class="nc-icon nc-image"></i></p>
+                  <p class="text-center p-10"> Import the book picture </p>
+              </div>
+
+              <div class="row croppingZone" *ngIf="imgToCropSelected && (croppingValidated == false)">
+
+                  <div class="text-center col-md-8 "  style="margin: auto;">
+                      <h6 class="text-danger">Recardrez l'image s'il vous plait.</h6>
+                      <image-cropper 
+                          [imageChangedEvent]="imageChangedEvent" 
+                          [maintainAspectRatio]="true" 
+                          [aspectRatio]="4 / 4"
+                          [resizeToWidth]="256" 
+                          format="png" 
+                          (imageCropped)="imageCropped($event)" 
+                          (imageLoaded)="imageLoaded()"
+                          (cropperReady)="cropperReady()" 
+                          (loadImageFailed)="loadImageFailed()">
+                      </image-cropper>
+
+                      <div>
+                          <button (click)="rejectCropping()" 
+                          nz-button nzType="danger" nzShape="circle"><i nz-icon nzType="close" nzTheme="outline"></i></button>
+                          <button (click)="validCropping()"
+                          nz-button nzType="primary" nzShape="circle"><i nz-icon nzType="check" nzTheme="outline"></i></button>
+                      </div>
+
+                  </div>
+
+              </div>
+
+              <div class="text-center col-md-4" style="width:300px; margin: auto;" *ngIf="imgToCropSelected && croppingValidated">
+                  
+                  <button class="closeImgSelected" (click)="rejectCropping()" nz-button nzType="danger" nzShape="circle">
+                      <i nz-icon nzType="close" nzTheme="outline"></i>
+                  </button>
+                  <div  class="importImg"> 
+                      <img [src]="croppedImage" width="100%" height="auto"/>
+                  </div>
+              </div>
+
+          </div>
+          <!-- End image cropping -->
+        </div>
+
+        <div class="col-md-8">
+          <form   #newbookForm="ngForm" (ngSubmit)="saveNewBook()">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label><b>Title</b></label>
+                  <input type="text" class="form-control" placeholder="The book title" [(ngModel)]="newBook.title" 
+                  name="title" ngModel required >
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label><b>Author</b></label>
+                  <input type="text" class="form-control" [(ngModel)]="newBook.author" 
+                  name="author" ngModel required placeholder="The book author name" >
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label><b>Resume</b></label>
+                  <textarea type="text" class="form-control" [(ngModel)]="newBook.resume" 
+                  name="resume"  ngModel required placeholder="Write a resume of the book"
+                  ></textarea>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label><b>Pages</b></label>
+                  <input type="number" class="form-control" [(ngModel)]="newBook.pages" 
+                  name="pages"  ngModel required placeholder="Number of pages in the book" >
+                </div>
+              </div>
+            </div>
+            
+            <div class="row">
+              <div class="update ml-auto mr-auto">
+                <button type="submit"  [disabled]="!newbookForm.form.valid"  class="btn btn-primary btn-round">Save change</button>
+              </div>
+            </div>
+
+          </form>
+        </div>
+      </div>
+    </div>
+</div>
+
+
+<div class="card" *ngIf="activeBookUpdateForm" >
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-12">
+          <h5 class="title pl-2" > Update the book information</h5>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4">
+            <!-- image cropping -->
+            <div class="container m-t-25">
+
+              <div class="row" style="margin-top: 5%;">
+                  <div class="text-center col-md-12">
+                      <input type="file" style="display: none;" #selectProdImg (change)="fileChangeEvent($event)" />
+                  </div>
+              </div>
+
+              <div  class="importImg p-t-10" (click)="selectProdImg.click()" *ngIf="imgToCropSelected == false">
+                  <p class="text-center p-10"><i class="nc-icon nc-image"></i></p>
+                  <p class="text-center p-10"> Import the book picture </p>
+              </div>
+
+              <div class="row croppingZone" *ngIf="imgToCropSelected && (croppingValidated == false)">
+
+                  <div class="text-center col-md-8 "  style="margin: auto;">
+                      <h6 class="text-danger">Recardrez l'image s'il vous plait.</h6>
+                      <image-cropper 
+                          [imageChangedEvent]="imageChangedEvent" 
+                          [maintainAspectRatio]="true" 
+                          [aspectRatio]="4 / 4"
+                          [resizeToWidth]="256" 
+                          format="png" 
+                          (imageCropped)="imageCropped($event)" 
+                          (imageLoaded)="imageLoaded()"
+                          (cropperReady)="cropperReady()" 
+                          (loadImageFailed)="loadImageFailed()">
+                      </image-cropper>
+
+                      <div>
+                          <button (click)="rejectCropping()" 
+                          nz-button nzType="danger" nzShape="circle"><i nz-icon nzType="close" nzTheme="outline"></i></button>
+                          <button (click)="validCropping()"
+                          nz-button nzType="primary" nzShape="circle"><i nz-icon nzType="check" nzTheme="outline"></i></button>
+                      </div>
+
+                  </div>
+
+              </div>
+
+              <div class="text-center col-md-4" style="width:300px; margin: auto;" *ngIf="imgToCropSelected && croppingValidated">
+                  
+                  <button class="closeImgSelected" (click)="rejectCropping()" nz-button nzType="danger" nzShape="circle">
+                      <i nz-icon nzType="close" nzTheme="outline"></i>
+                  </button>
+                  <div  class="importImg"> 
+                      <img [src]="croppedImage" width="100%" height="auto"/>
+                  </div>
+              </div>
+
+          </div>
+          <!-- End image cropping -->
+        </div>
+
+        <div class="col-md-8">
+          <form #updatebookForm="ngForm" (ngSubmit)="onUpdatedBookSaved()">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label><b>Title</b></label>
+                  <input type="text" class="form-control" placeholder="The book title" [(ngModel)]="updatedBookData.title" 
+                  name="title" ngModel required >
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label><b>Author</b></label>
+                  <input type="text" class="form-control" [(ngModel)]="updatedBookData.author" 
+                  name="author" ngModel required placeholder="The book author name" >
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label><b>Resume</b></label>
+                  <textarea type="text" class="form-control" [(ngModel)]="updatedBookData.resume" 
+                  name="resume"  ngModel required placeholder="Write a resume of the book"
+                  ></textarea>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label><b>Pages</b></label>
+                  <input type="number" class="form-control" [(ngModel)]="updatedBookData.pages" 
+                  name="pages"  ngModel required placeholder="Number of pages in the book" >
+                </div>
+              </div>
+            </div>
+            
+            <div class="row">
+              <div class="update ml-auto mr-auto">
+                <button type="submit"  [disabled]="!updatebookForm.form.valid"  class="btn btn-primary btn-round">Save changes</button>
+              </div>
+            </div>
+
+          </form>
+        </div>
+      </div>
+    </div>
+</div>
+

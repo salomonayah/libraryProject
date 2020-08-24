@@ -1,0 +1,108 @@
+
+<div class="card">
+  <div class="card-body">
+    <div class="row">
+      <div class="col-md-4">
+          <!-- image cropping -->
+          <div class="container m-t-25">
+
+            <div class="row" style="margin-top: 5%;">
+                <div class="text-center col-md-12">
+                    <input type="file" style="display: none;" #selectProdImg (change)="fileChangeEvent($event)" />
+                </div>
+            </div>
+
+            <div  class="importImg p-t-10" (click)="selectProdImg.click()" *ngIf="imgToCropSelected == false">
+                <p class="text-center p-10"><i nz-icon nzType="plus" nzTheme="outline"></i></p>
+                <p class="text-center p-10"> Import the book picture </p>
+            </div>
+
+            <div class="row croppingZone" *ngIf="imgToCropSelected && (croppingValidated == false)">
+
+                <div class="text-center col-md-8 "  style="margin: auto;">
+                    <h6 class="text-danger">Recardrez l'image s'il vous plait.</h6>
+                    <image-cropper 
+                        [imageChangedEvent]="imageChangedEvent" 
+                        [maintainAspectRatio]="true" 
+                        [aspectRatio]="4 / 4"
+                        [resizeToWidth]="256" 
+                        format="png" 
+                        (imageCropped)="imageCropped($event)" 
+                        (imageLoaded)="imageLoaded()"
+                        (cropperReady)="cropperReady()" 
+                        (loadImageFailed)="loadImageFailed()">
+                    </image-cropper>
+
+                    <div>
+                        <button (click)="rejectCropping()" 
+                        nz-button nzType="danger" nzShape="circle"><i nz-icon nzType="close" nzTheme="outline"></i></button>
+                        <button (click)="validCropping()"
+                        nz-button nzType="primary" nzShape="circle"><i nz-icon nzType="check" nzTheme="outline"></i></button>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="text-center col-md-4" style="width:300px; margin: auto;" *ngIf="imgToCropSelected && croppingValidated">
+                
+                <button class="closeImgSelected" (click)="rejectCropping()" nz-button nzType="danger" nzShape="circle">
+                    <i nz-icon nzType="close" nzTheme="outline"></i>
+                </button>
+                <div  class="importImg"> 
+                    <img [src]="croppedImage" width="100%" height="auto"/>
+                </div>
+            </div>
+
+        </div>
+        <!-- End image cropping -->
+      </div>
+
+      <div class="col-md-8">
+        <form>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label><b>Title</b></label>
+                <input type="text" class="form-control" placeholder="The book title">
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label><b>Author</b></label>
+                <input type="text" class="form-control" placeholder="The book author name" >
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label><b>Resume</b></label>
+                <textarea type="text" class="form-control" 
+                placeholder="Write a resume of the book"
+                ></textarea>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label><b>Pages</b></label>
+                <input type="number" class="form-control" placeholder="Number of pages in the book" >
+              </div>
+            </div>
+          </div>
+          
+          <div class="row">
+            <div class="update ml-auto mr-auto">
+              <button type="submit" class="btn btn-primary btn-round">Save change</button>
+            </div>
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
