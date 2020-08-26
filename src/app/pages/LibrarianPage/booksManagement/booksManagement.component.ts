@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ImageCroppedEvent } from 'ngx-image-cropper';
-import { Book } from 'app/models/Book.model';
-import { BookService } from 'app/services/bookServices/book.service';
+import { Book } from '../../../models/Book.model';
+import { BookService } from '../../../services/bookServices/book.service';
 import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
 
@@ -71,8 +71,8 @@ export class BooksManagementComponent implements OnInit, OnDestroy {
         // get book list
         this.bookSubscription = this.bookService.bookSubject.subscribe(
             (books: Book[]) => {
-                console.log('bookSubject')
-                console.log(books)
+                //console.log('bookSubject')
+                //console.log(books)
                 this.books = [...books];
             })
         this.bookService.getAllBook();
@@ -131,57 +131,6 @@ export class BooksManagementComponent implements OnInit, OnDestroy {
     ngOnDestroy() {
         this.bookSubscription.unsubscribe()
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

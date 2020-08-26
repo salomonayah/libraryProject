@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import * as firebase from 'firebase';
-import { Book } from 'app/models/Book.model';
+import { Book } from '../../models/Book.model';
 import { Subject } from 'rxjs';
 
 @Injectable({
